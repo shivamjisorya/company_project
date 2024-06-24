@@ -293,13 +293,10 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   }
-
-
   
   .image-box-video1{
     width: 200px;
     height: 100px;
-    /* background-color: white; */
     background-color: white;
     object-fit:inherit;
     border-radius: 8px;

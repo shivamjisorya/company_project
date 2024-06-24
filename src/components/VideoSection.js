@@ -9,7 +9,7 @@ const VideoSection = () => {
     const handleTimeUpdate = () => {
         if (videoRef.current.currentTime >= 40) {
             setShowForm(true);
-            videoRef.current.pause();  // Pause the video
+            videoRef.current.pause(); 
             videoRef.current.removeEventListener('timeupdate', handleTimeUpdate);
         }
     };

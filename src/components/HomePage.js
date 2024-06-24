@@ -12,7 +12,6 @@ const HomePage = () => {
             videoRef.current.pause();
             videoRef.current.removeEventListener('timeupdate', handleTimeUpdate);
         }
-
     };
 
     return (
@@ -253,8 +252,7 @@ const HomePage = () => {
 
 
 
-
-            </>
+        </>
     );
 };
 
