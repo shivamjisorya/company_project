@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import $ from 'jquery';
 
 const FormSection = () => {
     const navigate = useNavigate();
@@ -11,7 +12,7 @@ const FormSection = () => {
     const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     const validatePhone = (phone) => /^[0-9]{10}$/.test(phone);
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
         const newErrors = {};
         if (!validateEmail(formData.email)) newErrors.email = 'Invalid email address';
@@ -20,35 +21,25 @@ const FormSection = () => {
             setErrors(newErrors);
             return;
         }
-        
         setErrors({});
         setLoading(true);
 
-        try {
-            const response = await fetch('http://localhost:4000/send_mail', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            });
-
-            if (response.ok) {
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:4000/send_mail',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function(response) {
+                setLoading(false);
                 setSubmitSuccess(true);
                 navigate('/thank-you');
-            } else {
+            },
+            error: function(xhr, status, error) {
+                setLoading(false);
                 setSubmitSuccess(false);
-                const errorMessage = await response.text();
-                console.error('Error:', errorMessage);
-                alert('Error sending email: ' + errorMessage);
+                alert('Failed to submit form. Please try again.');
             }
-        } catch (error) {
-            setSubmitSuccess(false);
-            console.error('Error:', error);
-            alert('Error sending email.');
-        } finally {
-            setLoading(false);
-        }
+        });
     };
 
     const handleChange = (event) => {
@@ -105,8 +96,8 @@ const FormSection = () => {
             <button type="submit" className="btn btn-primary" disabled={loading}>
                 {loading ? 'Submitting...' : 'Submit'}
             </button>
-            {submitSuccess === true && <div className="text-success mt-3">Email sent successfully!</div>}
-            {submitSuccess === false && <div className="text-danger mt-3">Failed to send email.</div>}
+            {submitSuccess === true && <div className="text-success mt-3">Form submitted successfully!</div>}
+            {submitSuccess === false && <div className="text-danger mt-3">Failed to submit form.</div>}
         </form>
     );
 };

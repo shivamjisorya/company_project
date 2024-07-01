@@ -1,4 +1,3 @@
-// src/components/VideoSection.js
 import React, { useState, useEffect, useRef } from 'react';
 import FormSection from './FormSection';
 
